@@ -8,6 +8,9 @@ Convert Org mode files to html.
   * may be required or not, we will see.
 
 # Installation
+
+Step 1, install [Python 3](http://python.org).
+
 ```
   pip install flask
   pip install orgparse
