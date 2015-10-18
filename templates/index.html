@@ -1,0 +1,5 @@
+<!doctype html>
+<title>Hello</title>
+{% if content %} {% for node in content %}
+<h1>{{node.heading}}</h1> {% endfor %} {% else %}
+<h1>No content yet!</h1> {% endif %}

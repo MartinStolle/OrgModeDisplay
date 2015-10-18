@@ -14,6 +14,7 @@ import time
 import orgparse
 
 from flask import Flask
+from flask import render_template
 
 from watchdog import observers
 from watchdog import events
@@ -21,10 +22,12 @@ from watchdog import events
 #: `py:class:flask.Flask`
 app = Flask(__name__)
 
+sitecontent = None
+
 
 @app.route('/')
 def hello_world():
-    return 'Hello World!'
+    return render_template('index.html', content=sitecontent)
 
 
 def convert_to_html(content):
@@ -32,7 +35,8 @@ def convert_to_html(content):
 
     :param content: `py:class:orgparse.node.OrgRootNode`
     '''
-    pass
+    global sitecontent
+    sitecontent = content
 
 
 def process_file(filename):
@@ -62,7 +66,7 @@ def serve(path):
     observer = observers.Observer()
     observer.schedule(eventHandler, path, recursive=False)
     observer.start()
-    app.run()
+    app.run(debug=True)
     observer.stop()
     observer.join()
 
