@@ -1,5 +1,26 @@
-<!doctype html>
-<title>Hello</title>
-{% if content %} {% for node in content %}
-<h1>{{node.heading}}</h1> {% endfor %} {% else %}
-<h1>No content yet!</h1> {% endif %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% block head %}
+    <title>TODOS</title>
+    {% endblock %}
+</head>
+
+<body>
+    <div id="content">
+        {% block content %}
+        <ul class="sitemap">
+            {%- for item in content.children recursive %}
+            <li>{{ item.heading }} ({{ item.body }}) [{{ item.tags }}] {%- if item.children -%}
+                <ul>{{ loop(item.children) }}</ul>
+                {%- endif %}</li>
+            {%- endfor %}
+        </ul>
+        {% endblock %}</div>
+    <div id="footer">
+        {% block footer %} by Martin {% endblock %}
+    </div>
+</body>
+
+</html>

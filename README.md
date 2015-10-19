@@ -14,6 +14,7 @@ Step 1, install [Python 3](http://python.org).
 
 ```
   pip install flask
+  pip install flask-socketio
   pip install orgparse
   pip install watchdog
 ```

@@ -9,7 +9,7 @@
     :license: no license.
 '''
 import argparse
-import time
+import os
 
 import orgparse
 
@@ -19,21 +19,21 @@ from flask import render_template
 from watchdog import observers
 from watchdog import events
 
-#: `py:class:flask.Flask`
+#: :class:`flask.Flask`
 app = Flask(__name__)
 
 sitecontent = None
 
 
 @app.route('/')
-def hello_world():
+def render():
     return render_template('index.html', content=sitecontent)
 
 
 def convert_to_html(content):
     '''
 
-    :param content: `py:class:orgparse.node.OrgRootNode`
+    :param content: :class:`orgparse.node.OrgRootNode`
     '''
     global sitecontent
     sitecontent = content
@@ -45,8 +45,9 @@ def process_file(filename):
     :param filename: file to process
     :type param: str
     '''
-    content = orgparse.load(filename)
-    convert_to_html(content)
+    with open(filename, 'r') as fb:
+        content = orgparse.loads(fb.read())
+        convert_to_html(content)
 
 
 class OrgFilesHandler(events.PatternMatchingEventHandler):
@@ -61,7 +62,14 @@ class OrgFilesHandler(events.PatternMatchingEventHandler):
         process_file(event.src_path)
 
 
+def init(folder):
+    for filename in os.listdir(folder):
+        if filename.endswith('.org'):
+            process_file(os.path.join(folder, filename))
+
+
 def serve(path):
+    init(path)
     eventHandler = OrgFilesHandler()
     observer = observers.Observer()
     observer.schedule(eventHandler, path, recursive=False)
