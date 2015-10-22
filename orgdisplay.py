@@ -80,7 +80,9 @@ def serve(path):
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description='Watch folder with org mode files.')
+    parser = argparse.ArgumentParser(
+        description='Watch folder with org mode files.'
+    )
     parser.add_argument('-f', '--folder', default='.', nargs='?')
     args = parser.parse_args()
     serve(args.folder)

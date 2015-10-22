@@ -3,21 +3,35 @@
 
 <head>
     {% block head %}
+    <link rel="stylesheet" href="static/style.css">
     <title>TODOS</title>
     {% endblock %}
 </head>
 
 <body>
     <div id="content">
-        {% block content %}
-        <ul class="sitemap">
-            {%- for item in content.children recursive %}
-            <li>{{ item.heading }} ({{ item.body }}) [{{ item.tags }}] {%- if item.children -%}
-                <ul>{{ loop(item.children) }}</ul>
-                {%- endif %}</li>
-            {%- endfor %}
-        </ul>
-        {% endblock %}</div>
+        {% block content %} {%- for item in content.children recursive %}
+        <div class='container'>
+            <details>
+                <summary>{{ item.heading }}</summary>
+                <table>
+                    {%- if item.priority -%}
+                    <tr>
+                        <th scope="row">Prioritaet</th>
+                        <td>{{ item.priority }}</td>
+                    </tr>
+                    {%- endif %}{%- if item.body -%}
+                    <tr>
+                        <th scope="row">Notizen</th>
+                        <td>{{ item.body }}</td>
+                    </tr>
+                    {%- endif %}
+                </table>
+                {%- if item.children -%} {{ loop(item.children) }} {%- endif %}
+            </details>
+        </div>
+        {%- endfor %} {% endblock %}
+    </div>
     <div id="footer">
         {% block footer %} by Martin {% endblock %}
     </div>
